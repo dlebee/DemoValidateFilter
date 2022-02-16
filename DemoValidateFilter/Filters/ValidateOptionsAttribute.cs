@@ -3,7 +3,7 @@ using System;
 
 namespace DemoValidateFilter.Filters
 {
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ValidateOptionsAttribute : TypeFilterAttribute
     {
         public ValidateOptionsAttribute(params Type[] validationTypes) : base(typeof(ValidateOptionsFilter))

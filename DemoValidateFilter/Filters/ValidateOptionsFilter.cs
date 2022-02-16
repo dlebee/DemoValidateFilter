@@ -13,10 +13,13 @@ namespace DemoValidateFilter.Filters
         {
             if (context.ActionDescriptor is Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor action) 
             {
-                var attribute = action.MethodInfo.GetCustomAttribute<ValidateOptionsAttribute>();
-                if (attribute != null)
+                var methodAttribute = action.MethodInfo.GetCustomAttribute<ValidateOptionsAttribute>();
+                var classAttribute = action.MethodInfo.DeclaringType.GetCustomAttribute<ValidateOptionsAttribute>();
+                var finalAttribute = methodAttribute ?? classAttribute;
+
+                if (finalAttribute != null)
                 {
-                    var validatorTypes = attribute.ValidationTypes;
+                    var validatorTypes = finalAttribute.ValidationTypes;
                     foreach (var validatorType in validatorTypes)
                     {
                         if (context.HttpContext.RequestServices.GetService(validatorType) is IOptions<dynamic> dynamicOptions)
